@@ -148,9 +148,8 @@ class State {
     }
     int is_corner =
         max_pos == 0 || max_pos == 3 || max_pos == 12 || max_pos == 15;
-
     //
-    const int w0 = 2, w1 = 1;
+    const int w0 = 1, w1 = 1;
     evaluated_score = w0 * cnt_0 + w1 * is_corner;
   }
 
@@ -385,6 +384,7 @@ string decide_action_beam_search_multi(State &init_state, TimeKeeper &tk,
     if (now_beam.empty()) break;
     best_idx = now_beam.top().first_action;
   }
+  cerr << "探索の深さt： " << t << endl;
   return init_legal_actions[best_idx].first;
 }
 
@@ -399,13 +399,13 @@ void local_play() {
   int turn = 0;
   int depth = 3;
   while (1) {
-    TimeKeeper tk(40);
+    TimeKeeper tk(80);
     turn++;
     // if (turn == 200) depth++;
     // if (turn == 400) depth++;
     // if (turn == 500) depth++;
     // if (turn == 550) depth++;
-    string actions = decide_action_beam_search_multi(state, tk, 10, depth);
+    string actions = decide_action_beam_search_multi(state, tk, 100, depth);
     if (actions == "") break;
     for (char c : actions) {
       state.advance(char2action[c]);
